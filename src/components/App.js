@@ -8,17 +8,27 @@ console.log("Here's the data you're working with");
 console.log({ CATEGORIES, TASKS });
 
 function App() {
+  // state variables for selected category and tasks
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tasks, setTasks] = useState(TASKS);
 
+  // function to handle category click
   function handleCategoryClick(category) {
     setSelectedCategory(category);
+    console.log(category);
   }
 
+  // function to handle task deletion
   function handleDelete(text) {
     setTasks(tasks.filter((task) => task.text !== text));
   }
 
+  // function to handle task form submission
+  function handleTaskFormSubmit(task) {
+    setTasks([...tasks, task]);
+  }
+
+  // determine tasks to display based on category
   const tasksToDisplay =
     selectedCategory === "All"
       ? tasks
@@ -32,7 +42,10 @@ function App() {
         selectedCategory={selectedCategory}
         onCategoryClick={handleCategoryClick}
       />
-      <NewTaskForm />
+      <NewTaskForm
+        categories={CATEGORIES}
+        onTaskFormSubmit={handleTaskFormSubmit}
+      />
       <TaskList tasks={tasksToDisplay} onDelete={handleDelete} />
     </div>
   );
